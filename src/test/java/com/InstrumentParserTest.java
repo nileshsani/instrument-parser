@@ -20,7 +20,7 @@ public class InstrumentParserTest
     public void testGenerateMockRequestFilePath_Valid()
     {
         InstrumentParser parser = new InstrumentParser();
-        String actual1 = parser.generateMockRequestFilePath("LME", "PB_03_2018");
+        String actual1 = parser.generateMockRequestFilePath(InstrumentParser.LME_INSTRUMENT, "PB_03_2018");
         String actual2 = parser.generateMockRequestFilePath("DUMMY1", "PB_03_2018");
 
         String expected1 = "src/requestObjects/LME_PB_03_2018.json";
@@ -49,7 +49,7 @@ public class InstrumentParserTest
     {
         InstrumentParser parser = new InstrumentParser();
         parser.setMappingRuleFileName(InstrumentParser.MAPPING_RULES_FILE);
-        Instrument actual = parser.getRequest("LME", "PB_03_2018");
+        Instrument actual = parser.getRequest(InstrumentParser.LME_INSTRUMENT, "PB_03_2018");
 
         Instrument expected = new Instrument();
         expected.setLastTradingDate("15-03-2018");
@@ -69,7 +69,7 @@ public class InstrumentParserTest
     {
         InstrumentParser parser = new InstrumentParser();
         parser.setMappingRuleFileName(InstrumentParser.MAPPING_RULES_FILE);
-        Instrument actual = parser.getRequest("PRIME", "PB_03_2018");
+        Instrument actual = parser.getRequest(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018");
 
         Instrument expected = new Instrument();
         expected.setLastTradingDate("14-03-2018");
@@ -94,16 +94,16 @@ public class InstrumentParserTest
         String expectedString = "[{\"LAST_TRADING_DATE\":\"15-03-2018\",\"DELIVERY_DATE\":\"17-03-2018\",\"MARKET\":\"PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":true},{\"LAST_TRADING_DATE\":\"15-03-2018\",\"DELIVERY_DATE\":\"17-03-2018\",\"MARKET\":\"LME_PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":false}]";
 
         try {
-            Instrument instrument1 = parser.getRequest("LME", "PB_03_2018");
-            Instrument instrument2 = parser.getRequest("PRIME", "PB_03_2018");
+            Instrument instrument1 = parser.getRequest(InstrumentParser.LME_INSTRUMENT, "PB_03_2018");
+            Instrument instrument2 = parser.getRequest(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018");
 
-            Reader lmeReader = new FileReader(parser.generateMockRequestFilePath("LME", "PB_03_2018"));
+            Reader lmeReader = new FileReader(parser.generateMockRequestFilePath(InstrumentParser.LME_INSTRUMENT, "PB_03_2018"));
             JSONObject rawLmeRequestObject = (JSONObject) jsonParser.parse(lmeReader);
-            parser.storeInstrument("LME", "PB_03_2018", rawLmeRequestObject, instrument1);
+            parser.storeInstrument(InstrumentParser.LME_INSTRUMENT, "PB_03_2018", rawLmeRequestObject, instrument1);
 
-            Reader primeReader = new FileReader(parser.generateMockRequestFilePath("PRIME", "PB_03_2018"));
+            Reader primeReader = new FileReader(parser.generateMockRequestFilePath(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018"));
             JSONObject rawPrimeRequestObject = (JSONObject) jsonParser.parse(primeReader);
-            parser.storeInstrument("PRIME", "PB_03_2018", rawPrimeRequestObject, instrument2);
+            parser.storeInstrument(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018", rawPrimeRequestObject, instrument2);
 
             String actualString = mapper.writeValueAsString(parser.getInstrumentStore().getIndexedStore().get("PB_03_2018"));
 
@@ -122,15 +122,15 @@ public class InstrumentParserTest
         parser.setMappingRuleFileName("src/mappingRules/dummy_rules.json");
         String expectedString = "[{\"LAST_TRADING_DATE\":\"15-03-2018\",\"DELIVERY_DATE\":\"17-03-2018\",\"MARKET\":\"PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":true},{\"LAST_TRADING_DATE\":\"15-03-2018\",\"DELIVERY_DATE\":\"17-03-2018\",\"MARKET\":\"DUMMY1_PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":true},{\"LAST_TRADING_DATE\":\"14-03-2018\",\"DELIVERY_DATE\":\"18-03-2018\",\"MARKET\":\"DUMMY2_PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":true},{\"LAST_TRADING_DATE\":\"14-03-2018\",\"DELIVERY_DATE\":\"18-03-2018\",\"MARKET\":\"DUMMY3_PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":true},{\"LAST_TRADING_DATE\":\"14-03-2018\",\"DELIVERY_DATE\":\"18-03-2018\",\"MARKET\":\"LME_PB\",\"LABEL\":\"Lead 13 March 2018\",\"TRADABLE\":false}]";
         try {
-            Instrument instrument1 = parser.getRequest("LME", "PB_03_2018");
+            Instrument instrument1 = parser.getRequest(InstrumentParser.LME_INSTRUMENT, "PB_03_2018");
             Instrument instrument2 = parser.getRequest("DUMMY1", "PB_03_2018");
             Instrument instrument3 = parser.getRequest("DUMMY2", "PB_03_2018");
             Instrument instrument4 = parser.getRequest("DUMMY3", "PB_03_2018");
-            Instrument instrument5 = parser.getRequest("PRIME", "PB_03_2018");
+            Instrument instrument5 = parser.getRequest(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018");
 
-            Reader lmeReader = new FileReader(parser.generateMockRequestFilePath("LME", "PB_03_2018"));
+            Reader lmeReader = new FileReader(parser.generateMockRequestFilePath(InstrumentParser.LME_INSTRUMENT, "PB_03_2018"));
             JSONObject rawLmeRequestObject = (JSONObject) jsonParser.parse(lmeReader);
-            parser.storeInstrument("LME", "PB_03_2018", rawLmeRequestObject, instrument1);
+            parser.storeInstrument(InstrumentParser.LME_INSTRUMENT, "PB_03_2018", rawLmeRequestObject, instrument1);
 
             Reader dummy1Reader = new FileReader(parser.generateMockRequestFilePath("DUMMY1", "PB_03_2018"));
             JSONObject rawDummy1RequestObject = (JSONObject) jsonParser.parse(dummy1Reader);
@@ -144,9 +144,9 @@ public class InstrumentParserTest
             JSONObject rawDummy3RequestObject = (JSONObject) jsonParser.parse(dummy3Reader);
             parser.storeInstrument("DUMMY3", "PB_03_2018", rawDummy3RequestObject, instrument4);
 
-            Reader primeReader = new FileReader(parser.generateMockRequestFilePath("PRIME", "PB_03_2018"));
+            Reader primeReader = new FileReader(parser.generateMockRequestFilePath(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018"));
             JSONObject rawPrimeRequestObject = (JSONObject) jsonParser.parse(primeReader);
-            parser.storeInstrument("PRIME", "PB_03_2018", rawPrimeRequestObject, instrument5);
+            parser.storeInstrument(InstrumentParser.PRIME_INSTRUMENT, "PB_03_2018", rawPrimeRequestObject, instrument5);
 
             String actualString = mapper.writeValueAsString(parser.getInstrumentStore().getIndexedStore().get("PB_03_2018"));
 

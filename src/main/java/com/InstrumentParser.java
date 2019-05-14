@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class InstrumentParser
 {
-    private static String LME_INSTRUMENT = "LME";
-    private static String PRIME_INSTRUMENT = "PRIME";
-    private static String MOCK_REQUEST_OBJECT_BASE_PATH = "src/requestObjects/";
+    public static String LME_INSTRUMENT = "LME";
+    public static String PRIME_INSTRUMENT = "PRIME";
+    public static String MOCK_REQUEST_OBJECT_BASE_PATH = "src/requestObjects/";
     public static String MAPPING_RULES_FILE = "src/mappingRules/rules.json";
 
     private InstrumentStore instrumentStore = new InstrumentStore();
